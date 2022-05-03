@@ -21,7 +21,7 @@ KEYNAME="B7BE5AC2"
 #===================================================
 
 # Retreive json file describing latest release
-wget -qO "${STAGING_DIR}/latest.json" "https://api.github.com/repos/shiftkey/desktop/releases/latest" || (echo "json download failed"; exit 1)
+wget -qO "${STAGING_DIR}/latest.json" "https://api.github.com/repos/rclone/rclone/releases/latest" || (echo "json download failed"; exit 1)
 
 # Get the new ID
 LATEST_ID=$(jq -r '.id' "${STAGING_DIR}/latest.json")
