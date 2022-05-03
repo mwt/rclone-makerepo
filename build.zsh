@@ -31,7 +31,7 @@ LATEST_ID=$(jq -r '.id' "${STAGING_DIR}/latest.json")
 if [[ -f "${STAGING_DIR}/version" ]] {
     if [[ "${LATEST_ID}" == $(<"${STAGING_DIR}/version") ]] {
         echo "Already latest version"
-        #exit 0
+        exit 0
     } else {
         echo "Adding version ${LATEST_ID}"
     }
