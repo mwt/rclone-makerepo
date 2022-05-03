@@ -8,8 +8,7 @@
 #  - jq: process json files
 #
 ## APT repos:
-#  - dpkg: get version info for renaming
-#  - apt-utils: contains apt-ftparchive
+#  - reprepro: makes apt repos
 #
 ## YUM repos:
 #  - rpm: get version info for renaming
@@ -18,5 +17,5 @@
 
 sudo apt update && sudo apt -y install \
 gzip gpg wget zsh jq \
-dpkg apt-utils \
+reprepro \
 rpm createrepo-c

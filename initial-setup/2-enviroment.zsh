@@ -1,6 +1,7 @@
 #!/bin/zsh
 
 SCRIPT_DIR=${0:a:h}
+REPO_DIR=${SCRIPT_DIR:h}
 
 # cd to main repo dir
 cd "${SCRIPT_DIR}/.."
@@ -8,8 +9,17 @@ cd "${SCRIPT_DIR}/.."
 # create downloads folder
 mkdir -p ./staging
 
-# create folder for apt repo
-mkdir -p ./dist/deb/dists/any/main/binary-amd64/
+# create reprepro options file
+cat << EOF > "$REPO_DIR/reprepro/conf/options"
+basedir $REPO_DIR/dist/deb
+dbdir $REPO_DIR/reprepro/db
+logdir $REPO_DIR/reprepro/logs
+EOF
+
+# create folders for reprepro
+mkdir -p ./reprepro/db/
+mkdir -p ./reprepro/logs/
+mkdir -p ./dist/deb/
 
 # create folder for yum repo
 mkdir -p ./dist/rpm/
