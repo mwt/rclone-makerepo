@@ -53,7 +53,7 @@ for DL_LINK in ${DL_LINK_ARRAY}; {
     DL_FILE="${DL_LINK##*/}"
     if [[ "${DL_FILE}" == *.deb ]] {
         wget -nv "${DL_LINK}" || (echo "deb download failed"; exit 1)
-        reprepro --confdir "${REPREPRO_DIR}/conf" includedeb main "${DL_FILE}"
+        reprepro --confdir "${REPREPRO_DIR}/conf" includedeb any "${DL_FILE}"
         #update_deb_repo "${DL_FILE}" "${DEB_REPO_DIR}" "${KEYNAME}" "${SCRIPT_DIR}/apt-ftparchive.conf"
     } elif [[ "${DL_FILE}" == *.rpm ]] {
         wget -nv "${DL_LINK}" || (echo "rpm download failed"; exit 1)
