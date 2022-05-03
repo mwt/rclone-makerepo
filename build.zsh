@@ -51,10 +51,11 @@ DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url' "$STAGING_DIR/
 for DL_LINK in ${DL_LINK_ARRAY}; {
     cd $STAGING_DIR
     DL_FILE="${DL_LINK##*/}"
-    if [[ "${DL_FILE}" == *.deb ]] {
+    if [[ "${DL_FILE}" == *-arm-v7.deb ]] {
+        # do nothing because both arm and arm-v7 are armhf?
+    } elif [[ "${DL_FILE}" == *.deb ]] {
         wget -nv "${DL_LINK}" || (echo "deb download failed"; exit 1)
         reprepro --confdir "${REPREPRO_DIR}/conf" includedeb any "${DL_FILE}"
-        #update_deb_repo "${DL_FILE}" "${DEB_REPO_DIR}" "${KEYNAME}" "${SCRIPT_DIR}/apt-ftparchive.conf"
     } elif [[ "${DL_FILE}" == *.rpm ]] {
         wget -nv "${DL_LINK}" || (echo "rpm download failed"; exit 1)
         update_rpm_repo "${DL_FILE}" "${RPM_REPO_DIR}" "${KEYNAME}"
