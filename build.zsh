@@ -51,7 +51,7 @@ DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url' "$STAGING_DIR/
 for DL_LINK in ${DL_LINK_ARRAY}; {
     cd $STAGING_DIR
     DL_FILE="${DL_LINK##*/}"
-    if [[ "${DL_FILE}" == *-arm-v7.deb ]] {
+    if [[ "${DL_FILE}" == *-arm.deb ]] {
         # do nothing because both arm and arm-v7 are armhf?
     } elif [[ "${DL_FILE}" == *.deb ]] {
         wget -nv "${DL_LINK}" || (echo "deb download failed"; exit 1)
