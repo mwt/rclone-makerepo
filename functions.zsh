@@ -9,7 +9,7 @@ date_time_echo() {
 
 
 #===================================================
-# Function for RPM Repo
+# Function for RPM Repo: called by make_repos()
 #===================================================
 
 update_rpm_repo() {
@@ -31,4 +31,34 @@ update_rpm_repo() {
 
     rm -f "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc"
     gpg --default-key "${KEYNAME}" -abs -o "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml"
+}
+
+
+#===================================================
+# Make Repos
+# $1 : JSON file with download links
+# $2 : Path to reprepro conf folder
+# $3 : Path to RPM repos
+#===================================================
+
+make_repos() {
+    # Get all download links (includes .AppImage)
+    local DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url' "$1")"}")
+
+    # Use the reprepro keyname with rpm
+    local KEYNAME=$(sed -n 's/SignWith: \(.\+\)/\1/p' "$2/distributions")
+
+    # Loop over download links, download files, and make repos (using functions in functions.zsh)
+    for DL_LINK in ${DL_LINK_ARRAY}; {
+        local DL_FILE="${DL_LINK##*/}"
+        if [[ "${DL_FILE}" == *-arm.deb ]] {
+            # do nothing because both arm and arm-v7 are armhf?
+        } elif [[ "${DL_FILE}" == *.deb ]] {
+            wget -Nnv "${DL_LINK}" || (date_time_echo "deb download failed"; exit 1)
+            reprepro --confdir "$2" includedeb any "${DL_FILE}"
+        } elif [[ "${DL_FILE}" == *.rpm ]] {
+            wget -Nnv "${DL_LINK}" || (date_time_echo "rpm download failed"; exit 1)
+            update_rpm_repo "${DL_FILE}" "$3" "${KEYNAME}"
+        }
+    }
 }
