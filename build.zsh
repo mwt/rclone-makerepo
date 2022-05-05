@@ -21,7 +21,7 @@ STAGING_DIR="${SCRIPT_DIR}/staging"
 #===================================================
 
 # Retreive json file describing latest release
-wget -qO "${STAGING_DIR}/latest.json" "${REPO_LATEST_API}" || (echo "json download failed"; exit 1)
+wget -qO "${STAGING_DIR}/latest.json" "${REPO_LATEST_API}" || (date_time_echo "json download failed"; exit 1)
 
 # Get the new ID
 LATEST_ID=$(jq -r '.id' "${STAGING_DIR}/latest.json")
