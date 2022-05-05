@@ -3,6 +3,10 @@
 # This script generates the repositories
 #===================================================
 
+# To use with another project, change this string and reprepro/conf/distributions
+REPO_LATEST_API="https://api.github.com/repos/rclone/rclone/releases/latest"
+
+# Get folder that this script is in
 SCRIPT_DIR=${0:a:h}
 
 # Folder where we store downloads json and version file
@@ -10,8 +14,6 @@ STAGING_DIR="${SCRIPT_DIR}/staging"
 
 # Get function for creating deb/rpm repos
 . "${SCRIPT_DIR}/functions.zsh"
-
-REPO_LATEST_API="https://api.github.com/repos/rclone/rclone/releases/latest"
 
 
 #===================================================
@@ -43,6 +45,7 @@ if [[ -f "${STAGING_DIR}/version" ]] {
 
 cd "${STAGING_DIR}"
 make_repos "${STAGING_DIR}/latest.json" "${SCRIPT_DIR}/reprepro/conf" "${SCRIPT_DIR}/dist/rpm"
+
 
 #===================================================
 # POST Update
