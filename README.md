@@ -21,6 +21,7 @@ To make this work for other projects, you need to edit [`reprepro/conf/distribut
 This script is written in [zsh](https://zsh.org/), a popular alternative to bash. This script directly runs the following commands.
 
 **Basic dependencies:**
+ - [sed](https://www.gnu.org/software/sed/) is used to read the GPG key id from a configuration file.
  - [GPG](https://gnupg.org/) is used to sign the repos.
  - [Wget](https://www.gnu.org/software/wget/) downloads json and packages.
  - [jq](https://stedolan.github.io/jq/) is used to process json files.
