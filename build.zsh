@@ -30,13 +30,13 @@ LATEST_ID=$(jq -r '.id' "${STAGING_DIR}/latest.json")
 # Only continue if the latest release ID is different from the ID in staging/version
 if [[ -f "${STAGING_DIR}/version" ]] {
     if [[ "${LATEST_ID}" == $(<"${STAGING_DIR}/version") ]] {
-        echo "Already latest version"
+        date_time_echo "Already latest version"
         exit 0
     } else {
-        echo "Adding version ${LATEST_ID}"
+        date_time_echo "Adding version ${LATEST_ID}"
     }
 } else {
-    echo "Adding version ${LATEST_ID}. No prior version found."
+    date_time_echo "Adding version ${LATEST_ID}. No prior version found."
 }
 
 
