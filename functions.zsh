@@ -1,3 +1,7 @@
+#===================================================
+# Function for timestamps
+#===================================================
+
 date_time_echo() {
     local DATE_BRACKET=$(date +"[%D %T]")
     echo "$DATE_BRACKET" "$@"
