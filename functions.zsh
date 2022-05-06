@@ -43,20 +43,22 @@ update_rpm_repo() {
 
 make_repos() {
     # Get all download links (includes .AppImage)
-    local DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url' "$1")"}")
+    local DL_LINK_ARRAY=($(jq -r '[ .assets[] | .browser_download_url | select(test("\\.(deb|rpm)$")) ] | join(" ")' "$1"))
 
     # Use the reprepro keyname with rpm
     local KEYNAME=$(sed -n 's/SignWith: \(.\+\)/\1/p' "$2/distributions")
 
     # Loop over download links, download files, and make repos (using functions in functions.zsh)
     for DL_LINK in ${DL_LINK_ARRAY}; {
+        echo $DL_LINK
         local DL_FILE="${DL_LINK##*/}"
-        if [[ "${DL_FILE}" == *-arm.deb ]] {
+        echo $DL_FILE
+        if [[ ${DL_FILE} == *-arm.deb ]] {
             # do nothing because both arm and arm-v7 are armhf?
-        } elif [[ "${DL_FILE}" == *.deb ]] {
+        } elif [[ ${DL_FILE} == *.deb ]] {
             wget -Nnv "${DL_LINK}" || (date_time_echo "deb download failed"; exit 1)
             reprepro --confdir "$2" includedeb any "${DL_FILE}"
-        } elif [[ "${DL_FILE}" == *.rpm ]] {
+        } elif [[ ${DL_FILE} == *.rpm ]] {
             wget -Nnv "${DL_LINK}" || (date_time_echo "rpm download failed"; exit 1)
             update_rpm_repo "${DL_FILE}" "$3" "${KEYNAME}"
         }
