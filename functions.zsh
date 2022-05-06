@@ -37,14 +37,32 @@ update_rpm_repo() {
 
 #===================================================
 # Make Repos
+# -m : the JSON file has multiple versions (for make-backlog)
 # $1 : JSON file with download links
 # $2 : Path to reprepro conf folder
 # $3 : Path to RPM repos
 #===================================================
 
 make_repos() {
+
+    # if multi flag is used, we want to behave differently
+    while getopts 'm' flag; do
+        case "${flag}" in
+            m) m_flag='true' ;;
+            *) date_time_echo "Unsupported option." ; exit 1 ;;
+        esac
+    done
+
+    # remove options from inputs
+    shift $((OPTIND-1))
+
     # Get all download links (includes .AppImage)
-    local DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url | select(test("\\.(deb|rpm)$"))' "$1")"}")
+    if [[ "$m_flag" = true ]] {
+        local DL_LINK_ARRAY=("${(f)"$(jq -r '.[] | .assets[] | .browser_download_url | select(test("\\.(deb|rpm)$"))' "$1")"}")
+    } else {
+        local DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url | select(test("\\.(deb|rpm)$"))' "$1")"}")
+    }
+    
 
     # Use the reprepro keyname with rpm
     local KEYNAME=$(sed -n 's/SignWith: \(.\+\)/\1/p' "$2/distributions")
