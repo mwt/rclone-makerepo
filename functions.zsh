@@ -43,7 +43,7 @@ update_rpm_repo() {
 
 make_repos() {
     # Get all download links (includes .AppImage)
-    local DL_LINK_ARRAY=($(jq -r '[ .assets[] | .browser_download_url | select(test("\\.(deb|rpm)$")) ] | join(" ")' "$1"))
+    local DL_LINK_ARRAY=("${(f)"$(jq -r '.assets[] | .browser_download_url | select(test("\\.(deb|rpm)$"))' "$1")"}")
 
     # Use the reprepro keyname with rpm
     local KEYNAME=$(sed -n 's/SignWith: \(.\+\)/\1/p' "$2/distributions")
