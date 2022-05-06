@@ -29,10 +29,10 @@ LATEST_ID=$(jq -r '.id' "${STAGING_DIR}/latest.json")
 # Only continue if the latest release ID is different from the ID in staging/version
 if [[ -f "${STAGING_DIR}/version" ]] {
     if [[ "${LATEST_ID}" == $(<"${STAGING_DIR}/version") ]] {
-        date_time_echo "Already latest version"
+        date_time_echo "Already latest version (${LATEST_ID}).\n"
         exit 0
     } else {
-        date_time_echo "Adding version ${LATEST_ID}"
+        date_time_echo "Adding version ${LATEST_ID}."
     }
 } else {
     date_time_echo "Adding version ${LATEST_ID}. No prior version found."
@@ -52,4 +52,5 @@ make_repos "${STAGING_DIR}/latest.json" "${SCRIPT_DIR}/reprepro/conf" "${SCRIPT_
 #===================================================
 
 # Write version number so that the loop will not repeat until a new version is released
-echo "${LATEST_ID}" > "${STAGING_DIR}/version"
+echo "${LATEST_ID}" > "${STAGING_DIR}/version" && 
+date_time_echo "Current version is now ${LATEST_ID}!\n"

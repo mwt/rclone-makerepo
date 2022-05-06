@@ -22,15 +22,16 @@ update_rpm_repo() {
     # query rpm arch separately
     local RPM_ARCH=$(rpm -qp --qf "%{arch}" "${RPM_FILE}")
 
-    date_time_echo "Copying ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm"
-    mkdir -p "${RPM_REPO_DIR}/${RPM_ARCH}/"
-    cp "${RPM_FILE}" "${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm"
+    (mkdir -p "${RPM_REPO_DIR}/${RPM_ARCH}/" &&
+    cp "${RPM_FILE}" "${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm" &&
+    date_time_echo "Copied ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm") ||
+    (date_time_echo "Failed to copy ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm"; exit 1)
 
     # remove and replace repodata
-    createrepo_c --update "${RPM_REPO_DIR}/${RPM_ARCH}"
+    createrepo_c  --update "${RPM_REPO_DIR}/${RPM_ARCH}" || exit 1
 
-    rm -f "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc"
-    gpg --default-key "${KEYNAME}" -abs -o "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml"
+    rm -f "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" &&
+    gpg --default-key "${KEYNAME}" -absq -o "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml" || exit 1
 }
 
 
@@ -50,17 +51,19 @@ make_repos() {
 
     # Loop over download links, download files, and make repos (using functions in functions.zsh)
     for DL_LINK in ${DL_LINK_ARRAY}; {
-        echo $DL_LINK
         local DL_FILE="${DL_LINK##*/}"
-        echo $DL_FILE
         if [[ ${DL_FILE} == *-arm.deb ]] {
             # do nothing because both arm and arm-v7 are armhf?
         } elif [[ ${DL_FILE} == *.deb ]] {
-            wget -Nnv "${DL_LINK}" || (date_time_echo "deb download failed"; exit 1)
-            reprepro --confdir "$2" includedeb any "${DL_FILE}"
+            wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || (date_time_echo "deb download failed"; exit 1)
+            (reprepro --confdir "$2" includedeb any "${DL_FILE}" >> "${DL_FILE}.log" && 
+            date_time_echo "Added ${DL_FILE} to APT repo.") ||
+            (date_time_echo "Failed to add ${DL_FILE} to APT repo."; exit 1)
         } elif [[ ${DL_FILE} == *.rpm ]] {
-            wget -Nnv "${DL_LINK}" || (date_time_echo "rpm download failed"; exit 1)
-            update_rpm_repo "${DL_FILE}" "$3" "${KEYNAME}"
+            wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || (date_time_echo "rpm download failed"; exit 1)
+            (update_rpm_repo "${DL_FILE}" "$3" "${KEYNAME}" >> "${DL_FILE}.log" &&
+            date_time_echo "Added ${DL_FILE} to YUM repo.") ||
+            (date_time_echo "Failed to add ${DL_FILE} to YUM repo."; exit 1)
         }
     }
 }
