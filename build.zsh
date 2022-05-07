@@ -15,6 +15,8 @@ STAGING_DIR="${SCRIPT_DIR}/staging"
 # Get function for creating deb/rpm repos
 . "${SCRIPT_DIR}/functions.zsh"
 
+# exit on first error
+set -e
 
 #===================================================
 # Get Info About Latest Release

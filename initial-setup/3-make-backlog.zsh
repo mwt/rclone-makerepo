@@ -14,7 +14,7 @@ REPO_DIR=${SCRIPT_DIR:h}
 STAGING_DIR="${REPO_DIR}/staging"
 
 # Make a backlog of the same size as the limit
-BACKLOG_SIZE=$(sed -n 's/Limit: \(.\+\)/\1/p' "${REPO_DIR}/reprepro/conf/distributions")
+BACKLOG_SIZE="${1:-$(sed -n 's/Limit: \(.\+\)/\1/p' "${REPO_DIR}/reprepro/conf/distributions")}"
 
 # Get function for creating deb/rpm repos
 . "${REPO_DIR}/functions.zsh"
