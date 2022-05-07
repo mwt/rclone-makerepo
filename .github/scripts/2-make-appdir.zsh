@@ -4,8 +4,9 @@
 REPO_DIR="${0:a:h:h:h}"
 REPO_NAME="${REPO_DIR##*/}"
 
-# Clean folder
-"${REPO_DIR}/clean.zsh"
+# delete every file that is not tracked by the repo
+cd "${REPO_DIR}"
+git clean -dfx
 
 mkdir "${REPO_DIR}/temp/"
 
