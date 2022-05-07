@@ -12,8 +12,6 @@ SCRIPT_DIR=${0:a:h}
 # Use packaged binaries if possible
 PATH="$SCRIPT_DIR/usr/bin:$PATH"
 
-echo "$(which gpg)" "$(which wget)" "$(which zsh)" "$(which jq)" "$(which git)" "$(which rpm)" "$(which createrepo_c)" "$(which reprepro)"
-
 # Folder where we store downloads json and version file
 STAGING_DIR="${SCRIPT_DIR}/staging"
 
