@@ -22,10 +22,10 @@ update_rpm_repo() {
     # query rpm arch separately
     local RPM_ARCH=$(rpm -qp --qf "%{arch}" "${RPM_FILE}")
 
-    (mkdir -p "${RPM_REPO_DIR}/${RPM_ARCH}/" &&
+    {mkdir -p "${RPM_REPO_DIR}/${RPM_ARCH}/" &&
     cp "${RPM_FILE}" "${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm" &&
-    date_time_echo "Copied ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm") ||
-    (date_time_echo "Failed to copy ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm"; exit 1)
+    date_time_echo "Copied ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm"} ||
+    {date_time_echo "Failed to copy ${RPM_FILE} to ${RPM_REPO_DIR}/${RPM_ARCH}/${RPM_FULLNAME}.rpm"; exit 1}
 
     # remove and replace repodata
     createrepo_c  --update "${RPM_REPO_DIR}/${RPM_ARCH}" || exit 1
@@ -73,15 +73,15 @@ make_repos() {
         if [[ ${DL_FILE} == *-arm.deb ]] {
             # do nothing because both arm and arm-v7 are armhf?
         } elif [[ ${DL_FILE} == *.deb ]] {
-            wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || (date_time_echo "deb download failed"; exit 1)
-            (reprepro --confdir "$2" includedeb any "${DL_FILE}" >> "${DL_FILE}.log" && 
-            date_time_echo "Added ${DL_FILE} to APT repo.") ||
-            (date_time_echo "Failed to add ${DL_FILE} to APT repo."; exit 1)
+            wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || {date_time_echo "deb download failed"; exit 1}
+            {reprepro --confdir "$2" includedeb any "${DL_FILE}" >> "${DL_FILE}.log" && 
+            date_time_echo "Added ${DL_FILE} to APT repo."} ||
+            {date_time_echo "Failed to add ${DL_FILE} to APT repo."; exit 1}
         } elif [[ ${DL_FILE} == *.rpm ]] {
-            wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || (date_time_echo "rpm download failed"; exit 1)
-            (update_rpm_repo "${DL_FILE}" "$3" "${KEYNAME}" >> "${DL_FILE}.log" &&
-            date_time_echo "Added ${DL_FILE} to YUM repo.") ||
-            (date_time_echo "Failed to add ${DL_FILE} to YUM repo."; exit 1)
+            wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || {date_time_echo "rpm download failed"; exit 1}
+            {update_rpm_repo "${DL_FILE}" "$3" "${KEYNAME}" >> "${DL_FILE}.log" &&
+            date_time_echo "Added ${DL_FILE} to YUM repo."} ||
+            {date_time_echo "Failed to add ${DL_FILE} to YUM repo."; exit 1}
         }
     }
 }
