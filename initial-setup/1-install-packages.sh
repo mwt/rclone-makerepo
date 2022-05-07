@@ -22,12 +22,12 @@ rpm createrepo-c
 
 ## Install build deps for reprepro
 sudo apt -y install build-essentials \
-debhelper libgpgme-dev libdb-dev libz-dev libbz2-dev liblzma-dev libarchive-dev shunit2 db-util
+debhelper libgpgme-dev libdb-dev zlib1g-dev libbz2-dev liblzma-dev libarchive-dev shunit2 db-util
 
 # Install fork of reprepro for multiple versions
-git clone https://github.com/ionos-cloud/reprepro.git "$HOME/.temp-reprepro-install"
-cd "$HOME/.temp-reprepro-install"
+git clone https://github.com/ionos-cloud/reprepro.git "./temp"
+cd "./temp"
 ./configure && make && sudo make install 
 
 cd -
-rm -rf "$HOME/.temp-reprepro-install"
+rm -rf "./temp"

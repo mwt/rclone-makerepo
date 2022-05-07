@@ -7,3 +7,6 @@
 /reprepro/conf/options
 /reprepro/db/
 /reprepro/logs/
+
+# AppDir stuff
+/usr/
