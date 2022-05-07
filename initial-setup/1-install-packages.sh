@@ -16,18 +16,14 @@
 #  - createrepo-c: make repo metadata
 #
 
+mkdir -p ./temp/
+
+# Download reprepro multiple versions
+wget -O ./temp/reprepro.deb https://mattwthomas.com/gh/bin/reprepro-multiple-versions_5.3.0-1.4_amd64.deb
+
 sudo apt update && sudo apt -y install \
 sed gpg wget zsh jq git \
-rpm createrepo-c
+rpm createrepo-c \
+./temp/reprepro.deb
 
-## Install build deps for reprepro
-sudo apt -y install build-essentials \
-debhelper libgpgme-dev libdb-dev zlib1g-dev libbz2-dev liblzma-dev libarchive-dev shunit2 db-util
-
-# Install fork of reprepro for multiple versions
-git clone https://github.com/ionos-cloud/reprepro.git "./temp"
-cd "./temp"
-./configure && make && sudo make install 
-
-cd -
-rm -rf "./temp"
+rm -r ./temp

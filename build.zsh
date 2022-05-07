@@ -9,6 +9,11 @@ REPO_LATEST_API="https://api.github.com/repos/rclone/rclone/releases/latest"
 # Get folder that this script is in
 SCRIPT_DIR=${0:a:h}
 
+# Use packaged binaries if possible
+PATH="$SCRIPT_DIR/usr/bin:$PATH"
+
+echo "$(which gpg)" "$(which wget)" "$(which zsh)" "$(which jq)" "$(which git)" "$(which rpm)" "$(which createrepo_c)" "$(which reprepro)"
+
 # Folder where we store downloads json and version file
 STAGING_DIR="${SCRIPT_DIR}/staging"
 
