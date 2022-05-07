@@ -6,6 +6,10 @@
 #  - wget: download json and packages
 #  - zsh: build script is in zsh
 #
+## YUM repos:
+#  - rpm: get version info for renaming
+#
 
 sudo apt update && sudo apt -y install \
 sed gpg wget zsh git \
+rpm

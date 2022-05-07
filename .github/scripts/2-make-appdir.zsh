@@ -16,7 +16,7 @@ chmod +x "${REPO_DIR}/temp/linuxdeploy-x86_64.AppImage"
 "${REPO_DIR}/temp/linuxdeploy-x86_64.AppImage" \
 --appdir="${REPO_DIR}" -d "${REPO_DIR}/rclone-makerepo.desktop" \
 -e "$(which jq)" \
--e "$(which rpm)" -e "$(which createrepo_c)" \
+-e "$(which createrepo_c)" \
 -e "$(which reprepro)"
 
 rm -r "${REPO_DIR}/temp/"
