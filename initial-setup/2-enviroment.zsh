@@ -13,7 +13,7 @@ mkdir -p ./staging
 if [[ -z $1 ]] {
     # do nothing
 } else {
-    sed -i "s/B7BE5AC2/$1/" "$REPO_DIR/reprepro/conf/distributions"
+    sed -i "s/^SignWith: .\+$/SignWith: $1/" "$REPO_DIR/reprepro/conf/distributions"
 }
 
 # create reprepro options file
