@@ -11,6 +11,22 @@ Because the first script installs packages with APT, it only works on Debian and
 Running those three scripts should get you a working installation. The two setup scripts, [`initial-setup/1-install-packages.sh`](./initial-setup/1-install-packages.sh) and [`initial-setup/2-enviroment.zsh`](./initial-setup/2-enviroment.zsh) are split apart for two reasons. The first is that the installation script requires superuser access. So, it is reasonable to have the two scripts run by different users. The second is that the environment script has to be run anytime that the user cleans the repository (eg. using `git clean -dfx`). The [`clean.zsh`](./clean.zsh) script automates this process.
 
 
+## Usage
+
+There is a [minimal example using this with GitHub actions here](https://github.com/mwt/rclone-makerepo-example/blob/main/.github/workflows/test.yml). This example can be easily extended to any Debian based CI. First, you must install or generate a GPG key. Then you need to download and extract the latest release. After this, you can run the following inside the folder:
+
+```sh
+./initial-setup/1-install-packages.sh
+./initial-setup/2-enviroment.zsh "$GPG_FINGERPRINT"
+```
+
+This installs all the dependencies and sets up the directory structure. After this, you an build the repositories:
+
+```sh
+./build.zsh
+```
+
+
 ## Using for Other Projects
 
 To make this work for other projects, you need to edit [`reprepro/conf/distributions`](./reprepro/conf/distributions) as well as the `REPO_LATEST_API` variable in [`build.zsh`](./build.zsh). The `SignWith` GPG key defined in the reprepro distributions file is also used to sign the YUM repository. 
