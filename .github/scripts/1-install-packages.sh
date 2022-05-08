@@ -21,9 +21,12 @@ mkdir -p ./temp/
 # Download reprepro multiple versions
 wget -O ./temp/reprepro.deb https://mattwthomas.com/gh/bin/reprepro-multiple-versions_5.3.0-1.4_amd64.deb
 
-sudo apt update && sudo apt -y install \
+sudo apt-get update && sudo apt-get -y install \
 zsh jq git \
 rpm createrepo-c \
 ./temp/reprepro.deb
+
+# don't allow reprepro to be updated from repos
+sudo apt-mark hold reprepro
 
 rm -r ./temp

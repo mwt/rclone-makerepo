@@ -10,6 +10,6 @@
 #  - rpm: get version info for renaming
 #
 
-sudo apt update && sudo apt -y install \
+sudo apt-get update && sudo apt -y install \
 sed gpg wget zsh git \
 rpm
