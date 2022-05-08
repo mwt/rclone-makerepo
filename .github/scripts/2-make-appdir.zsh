@@ -23,4 +23,4 @@ rm -r "${REPO_DIR}/temp/"
 
 # Package appdir as tarball
 cd "${REPO_DIR}/.."
-tar --exclude="${REPO_NAME}/.*" -czvf "rclone-makerepo.tar.gz" "${REPO_NAME}/"
+tar --exclude="${REPO_NAME}/.*" --exclude="${REPO_NAME}/clean.zsh" -czvf "rclone-makerepo.tar.gz" "${REPO_NAME}/"
