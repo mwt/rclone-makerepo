@@ -3,15 +3,12 @@
 SCRIPT_DIR=${0:a:h}
 REPO_DIR=${SCRIPT_DIR:h}
 
-# cd to main repo dir
-cd "$SCRIPT_DIR/.."
-
 # create downloads folder
-mkdir -p ./staging
+mkdir -p "$REPO_DIR/staging"
 
 # replace gpg code if there is an argument
 if [[ -z $1 ]] {
-    # do nothing
+    echo "Install gpg key yourself"
 } else {
     sed -i "s/^SignWith: .\+$/SignWith: $1/" "$REPO_DIR/reprepro/conf/distributions"
 }
@@ -24,17 +21,12 @@ logdir $REPO_DIR/reprepro/logs
 EOF
 
 # create folders for reprepro
-mkdir -p ./reprepro/db/
-mkdir -p ./reprepro/logs/
-mkdir -p ./dist/deb/
+mkdir -p "$REPO_DIR/reprepro/db/"
+mkdir -p "$REPO_DIR/reprepro/logs/"
+mkdir -p "$REPO_DIR/dist/deb/"
 
 # create folder for yum repo
-mkdir -p ./dist/rpm/
+mkdir -p "$REPO_DIR/dist/rpm/"
 
 # compile functions (not required)
-zcompile ./functions.zsh
-
-# undo cd
-cd -
-
-echo "Install gpg key yourself"
+zcompile "$REPO_DIR/functions.zsh"
