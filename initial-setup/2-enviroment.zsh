@@ -11,6 +11,8 @@ mkdir -p ./staging
 
 # replace gpg code if there is an argument
 if [[ -z $1 ]] {
+    # do nothing
+} else {
     sed -i "s/B7BE5AC2/$1/" "$REPO_DIR/reprepro/conf/distributions"
 }
 
