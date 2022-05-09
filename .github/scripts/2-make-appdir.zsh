@@ -21,6 +21,9 @@ chmod +x "${REPO_DIR}/temp/linuxdeploy-x86_64.AppImage"
 
 rm -r "${REPO_DIR}/temp/"
 
+# bundle zsh
+sh <(wget -qO- https://raw.githubusercontent.com/romkatv/zsh-bin/master/install) -d "${REPO_DIR}/usr" -e no
+
 # Package appdir as tarball
 cd "${REPO_DIR}/.."
 tar --exclude="${REPO_NAME}/.*" --exclude="${REPO_NAME}/clean.zsh" -czvf "rclone-makerepo.tar.gz" "${REPO_NAME}/"
