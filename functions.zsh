@@ -31,7 +31,7 @@ update_rpm_repo() {
     createrepo_c  --update "${RPM_REPO_DIR}/${RPM_ARCH}" || exit 1
 
     rm -f "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" &&
-    gpg --default-key "${KEYNAME}" -absq -o "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml" || exit 1
+    gpg --default-key "$3" -absq -o "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml.asc" "${RPM_REPO_DIR}/${RPM_ARCH}/repodata/repomd.xml" || exit 1
 }
 
 
