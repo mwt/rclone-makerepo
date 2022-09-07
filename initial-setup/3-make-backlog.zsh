@@ -10,6 +10,9 @@ REPO_API_URL="https://api.github.com/repos/rclone/rclone/releases"
 SCRIPT_DIR=${0:a:h}
 REPO_DIR=${SCRIPT_DIR:h}
 
+# Use packaged binaries if possible
+PATH="$REPO_DIR/usr/bin:$PATH"
+
 # Folder where we store downloads json and version file
 STAGING_DIR="${REPO_DIR}/staging"
 
