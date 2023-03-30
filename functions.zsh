@@ -70,7 +70,7 @@ make_repos() {
     # Loop over download links, download files, and make repos (using functions in functions.zsh)
     for DL_LINK in ${DL_LINK_ARRAY}; {
         local DL_FILE="${DL_LINK##*/}"
-        if [[ ${DL_FILE} == *-arm.deb ]] {
+        if [[ ${DL_FILE} == *-arm.deb || ${DL_FILE} == *-arm-v6.deb ]] {
             # do nothing because both arm and arm-v7 are armhf?
         } elif [[ ${DL_FILE} == *.deb ]] {
             wget -Nnv "${DL_LINK}" -o "${DL_FILE}.log" || {date_time_echo "deb download failed"; exit 1}
